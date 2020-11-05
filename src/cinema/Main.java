@@ -25,17 +25,31 @@ public class Main {
         int rows = scanner.nextInt();
         System.out.println("Enter the number of seats in each row:");
         int seatsPerRow = scanner.nextInt();
-        int totalIncome;
 
+        // calculate total seats in the screen room
         int seats = rows * seatsPerRow;
+        int totalIncome = 0;
+        int pricePerSeat = 10;
+
+        // check seats, for not more than 60
         if (seats <= 60) {
-            totalIncome = seats * 10;
-        } else {
+            // if so, each ticket is $10
+            // calculate total income
+            totalIncome = seats * pricePerSeat;
+        } else { // if number of seats is > 60
+            // the first half of rows is the "front"
             int frontRows = rows / 2;
+            // the remaining half is the "back"
             int backRows = rows - frontRows;
-            totalIncome = frontRows * seatsPerRow * 10 + backRows * seatsPerRow * 8;
+
+            // tickets for front half of rows are $10
+            // and $8 for the back half
+            // calculate total income
+            totalIncome += frontRows * seatsPerRow * pricePerSeat;
+            totalIncome += backRows * seatsPerRow * (pricePerSeat - 2);
         }
 
+        // display total income
         System.out.println("Total income: ");
         System.out.printf("$%d", totalIncome);
     }
