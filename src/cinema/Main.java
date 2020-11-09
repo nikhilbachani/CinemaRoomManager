@@ -13,27 +13,31 @@ public class Main {
         System.out.println("Enter the number of seats in each row:");
         int seatsPerRow = scanner.nextInt();
 
-        /* Stage 3: Tickets */
         initRoom(rows, seatsPerRow);
-        printRoom();
 
-        System.out.println("Enter a row number:");
-        int row = scanner.nextInt();
-        System.out.println("Enter a seat number in that row:");
-        int seat = scanner.nextInt();
+        int menuChoice;
+        do {
+            printMenu();
 
-        setBooked(row, seat);
+            menuChoice = scanner.nextInt();
+            switch (menuChoice) {
+                case 1:
+                    printRoom();
+                    break;
+                case 2:
+                    System.out.println("\nEnter a row number:");
+                    int row = scanner.nextInt();
+                    System.out.println("Enter a seat number in that row:");
+                    int seat = scanner.nextInt();
 
-        System.out.printf("%nTicket Price: $%d%n", getTicketPrice(row));
-        printRoom();
-    }
-
-    private static void initRoom(int rows, int seatsPerRow) {
-        room = new char[rows][seatsPerRow];
-
-        for (char[] vector: room) {
-            Arrays.fill(vector, 'S');
-        }
+                    bookSeat(row, seat);
+                    printTicketPrice(row);
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (menuChoice != 0);
     }
 
     /* Stage 1: Arrangement */
@@ -55,8 +59,6 @@ public class Main {
             }
             System.out.println();
         }
-
-        System.out.println();
     }
 
     /* Stage 2: Sold! */
@@ -71,8 +73,29 @@ public class Main {
         return ticketPrice;
     }
 
+    /* Stage 3: Tickets */
+    private static void initRoom(int rows, int seatsPerRow) {
+        room = new char[rows][seatsPerRow];
+
+        for (char[] vector: room) {
+            Arrays.fill(vector, 'S');
+        }
+    }
+
     // TODO: check valid row and seat index
-    private static void setBooked(int row, int seat) {
+    private static void bookSeat(int row, int seat) {
         room[row - 1][seat - 1] = 'B';
+    }
+
+    /* Stage 4: Menu, please! */
+    private static void printMenu() {
+        System.out.println();
+        System.out.println("1. Show the seats");
+        System.out.println("2. Buy a ticket");
+        System.out.println("0. Exit");
+    }
+
+    private static void printTicketPrice(int row) {
+        System.out.printf("%nTicket Price: $%d%n", getTicketPrice(row));
     }
 }
