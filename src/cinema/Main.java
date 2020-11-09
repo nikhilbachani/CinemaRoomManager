@@ -8,30 +8,18 @@ public class Main {
     static char[][] room;
 
     public static void main(String[] args) {
-        System.out.println("Enter the number of rows:");
-        int rows = scanner.nextInt();
-        System.out.println("Enter the number of seats in each row:");
-        int seatsPerRow = scanner.nextInt();
-
-        initRoom(rows, seatsPerRow);
+        initRoom();
 
         int menuChoice;
         do {
             printMenu();
-
             menuChoice = scanner.nextInt();
             switch (menuChoice) {
                 case 1:
                     printRoom();
                     break;
                 case 2:
-                    System.out.println("\nEnter a row number:");
-                    int row = scanner.nextInt();
-                    System.out.println("Enter a seat number in that row:");
-                    int seat = scanner.nextInt();
-
-                    bookSeat(row, seat);
-                    printTicketPrice(row);
+                    buyTicket();
                     break;
                 case 0:
                 default:
@@ -74,7 +62,12 @@ public class Main {
     }
 
     /* Stage 3: Tickets */
-    private static void initRoom(int rows, int seatsPerRow) {
+    private static void initRoom() {
+        System.out.println("Enter the number of rows:");
+        int rows = scanner.nextInt();
+        System.out.println("Enter the number of seats in each row:");
+        int seatsPerRow = scanner.nextInt();
+
         room = new char[rows][seatsPerRow];
 
         for (char[] vector: room) {
@@ -97,5 +90,15 @@ public class Main {
 
     private static void printTicketPrice(int row) {
         System.out.printf("%nTicket Price: $%d%n", getTicketPrice(row));
+    }
+
+    private static void buyTicket() {
+        System.out.println("\nEnter a row number:");
+        int row = scanner.nextInt();
+        System.out.println("Enter a seat number in that row:");
+        int seat = scanner.nextInt();
+
+        bookSeat(row, seat);
+        printTicketPrice(row);
     }
 }
