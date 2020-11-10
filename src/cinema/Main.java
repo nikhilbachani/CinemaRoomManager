@@ -14,6 +14,7 @@ public class Main {
         do {
             printMenu();
             menuChoice = scanner.nextInt();
+
             switch (menuChoice) {
                 case 1:
                     printRoom();
@@ -21,8 +22,13 @@ public class Main {
                 case 2:
                     buyTicket();
                     break;
+                case 3:
+                    printStatistics();
+                    break;
                 case 0:
+                    break;
                 default:
+                    System.out.println("Wrong input!");
                     break;
             }
         } while (menuChoice != 0);
@@ -63,19 +69,27 @@ public class Main {
 
     /* Stage 3: Tickets */
     private static void initRoom() {
-        System.out.println("Enter the number of rows:");
-        int rows = scanner.nextInt();
-        System.out.println("Enter the number of seats in each row:");
-        int seatsPerRow = scanner.nextInt();
+        boolean validInput = false;
 
-        room = new char[rows][seatsPerRow];
+        do {
+            System.out.println("Enter the number of rows:");
+            int rows = scanner.nextInt();
+            System.out.println("Enter the number of seats in each row:");
+            int seatsPerRow = scanner.nextInt();
 
-        for (char[] vector: room) {
-            Arrays.fill(vector, 'S');
-        }
+            if (rows < 0 || seatsPerRow < 0) {
+                System.out.println("Wrong input!");
+            } else {
+                validInput = true;
+                room = new char[rows][seatsPerRow];
+
+                for (char[] vector: room) {
+                    Arrays.fill(vector, 'S');
+                }
+            }
+        } while (!validInput);
     }
 
-    // TODO: check valid row and seat index
     private static void bookSeat(int row, int seat) {
         room[row - 1][seat - 1] = 'B';
     }
@@ -85,6 +99,7 @@ public class Main {
         System.out.println();
         System.out.println("1. Show the seats");
         System.out.println("2. Buy a ticket");
+        System.out.println("3. Statistics");
         System.out.println("0. Exit");
     }
 
@@ -93,12 +108,54 @@ public class Main {
     }
 
     private static void buyTicket() {
-        System.out.println("\nEnter a row number:");
-        int row = scanner.nextInt();
-        System.out.println("Enter a seat number in that row:");
-        int seat = scanner.nextInt();
+        boolean validInput = false;
 
-        bookSeat(row, seat);
-        printTicketPrice(row);
+        do {
+            System.out.println("\nEnter a row number:");
+            int row = scanner.nextInt();
+            System.out.println("Enter a seat number in that row:");
+            int seat = scanner.nextInt();
+
+            if (row <= 0 || row > room.length || seat <= 0 || seat > room[0].length) {
+                System.out.println("\nWrong input!");
+            } else if (room[row - 1][seat - 1] == 'B') {
+                System.out.println("\nThat ticket has already been purchased");
+            } else {
+                validInput = true;
+                bookSeat(row, seat);
+                printTicketPrice(row);
+            }
+        } while (!validInput);
+    }
+
+    /* Stage 5: Errors! */
+    private static void printStatistics() {
+        int ticketsSold = 0;
+        int currentIncome = 0;
+        int totalIncome = 0;
+        int totalSeats = room.length * room[0].length;
+
+        for (int row = 1; row <= room.length; row++) {
+            int seatPrice = getTicketPrice(row);
+
+            for (int seat = 1; seat <= room[0].length; seat++) {
+
+                if (room[row - 1][seat - 1] == 'B') {
+                    ticketsSold++;
+                    currentIncome += seatPrice;
+                }
+
+                totalIncome += seatPrice;
+            }
+        }
+
+        System.out.println();
+        System.out.printf("Number of purchased tickets: %d%n", ticketsSold);
+        // To print a '%' sign using printf(), we use %% format specifier
+        // https://stackoverflow.com/a/1708453
+        // A .2f rounds the floating point data to 2 decimal places (Math.round() is also viable)
+        System.out.printf("Percentage: %.2f%%%n", (float) ticketsSold / totalSeats * 100);
+        System.out.printf("Current income: $%d%n", currentIncome);
+        System.out.printf("Total income: $%d%n", totalIncome);
     }
 }
