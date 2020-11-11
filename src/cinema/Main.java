@@ -35,8 +35,7 @@ public class Main {
             }
         } while (menuOption != 0);
     }
-
-    /* Stage 1: Arrangement */
+    
     private static void printRoom() {
         System.out.println();
         System.out.println("Cinema:");
@@ -57,7 +56,6 @@ public class Main {
         }
     }
 
-    /* Stage 2: Sold! */
     private static int getTicketPrice(int row) {
         int seats = room.length * room[0].length;
         int ticketPrice = 10; // default ticket price
@@ -69,7 +67,6 @@ public class Main {
         return ticketPrice;
     }
 
-    /* Stage 3: Tickets */
     private static void initRoom() {
         boolean validInput = false;
 
@@ -101,7 +98,6 @@ public class Main {
         room[row - 1][seat - 1] = 'B';
     }
 
-    /* Stage 4: Menu, please! */
     private static void printMenu() {
         System.out.println();
         System.out.println("1. Show the seats");
@@ -141,7 +137,6 @@ public class Main {
         } while (!validInput);
     }
 
-    /* Stage 5: Errors! */
     private static void printStatistics() {
         int ticketsSold = 0;
         int currentIncome = 0;
@@ -164,9 +159,6 @@ public class Main {
 
         System.out.println();
         System.out.printf("Number of purchased tickets: %d%n", ticketsSold);
-        // To print a '%' sign using printf(), we use %% format specifier
-        // https://stackoverflow.com/a/1708453
-        // A .2f rounds the floating point data to 2 decimal places (Math.round() is also viable)
         System.out.printf("Percentage: %.2f%%%n", (float) ticketsSold / totalSeats * 100);
         System.out.printf("Current income: $%d%n", currentIncome);
         System.out.printf("Total income: $%d%n", totalIncome);
