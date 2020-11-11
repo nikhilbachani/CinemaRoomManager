@@ -10,12 +10,13 @@ public class Main {
     public static void main(String[] args) {
         initRoom();
 
-        int menuChoice;
+        int menuOption;
         do {
             printMenu();
-            menuChoice = scanner.nextInt();
+            String userChoice = scanner.nextLine();
+            menuOption = userChoice.matches("\\d+") ? Integer.parseInt(userChoice) : -1;
 
-            switch (menuChoice) {
+            switch (menuOption) {
                 case 1:
                     printRoom();
                     break;
@@ -28,10 +29,11 @@ public class Main {
                 case 0:
                     break;
                 default:
+                    System.out.println();
                     System.out.println("Wrong input!");
                     break;
             }
-        } while (menuChoice != 0);
+        } while (menuOption != 0);
     }
 
     /* Stage 1: Arrangement */
@@ -73,12 +75,17 @@ public class Main {
 
         do {
             System.out.println("Enter the number of rows:");
-            int rows = scanner.nextInt();
-            System.out.println("Enter the number of seats in each row:");
-            int seatsPerRow = scanner.nextInt();
+            String strRows = scanner.nextLine();
+            int rows = strRows.matches("\\d+") ? Integer.parseInt(strRows) : -1;
 
-            if (rows < 0 || seatsPerRow < 0) {
+            System.out.println("Enter the number of seats in each row:");
+            String strSeats = scanner.nextLine();
+            int seatsPerRow = strSeats.matches("\\d+") ? Integer.parseInt(strSeats) : -1;
+
+            if (rows <= 0 || seatsPerRow <= 0) {
+                System.out.println();
                 System.out.println("Wrong input!");
+                System.out.println();
             } else {
                 validInput = true;
                 room = new char[rows][seatsPerRow];
@@ -111,15 +118,21 @@ public class Main {
         boolean validInput = false;
 
         do {
-            System.out.println("\nEnter a row number:");
-            int row = scanner.nextInt();
+            System.out.println();
+            System.out.println("Enter a row number:");
+            String strRow = scanner.nextLine();
+            int row = strRow.matches("\\d+") ? Integer.parseInt(strRow) : -1;
+
             System.out.println("Enter a seat number in that row:");
-            int seat = scanner.nextInt();
+            String strSeat = scanner.nextLine();
+            int seat = strSeat.matches("\\d+") ? Integer.parseInt(strSeat) : -1;
 
             if (row <= 0 || row > room.length || seat <= 0 || seat > room[0].length) {
-                System.out.println("\nWrong input!");
+                System.out.println();
+                System.out.println("Wrong input!");
             } else if (room[row - 1][seat - 1] == 'B') {
-                System.out.println("\nThat ticket has already been purchased");
+                System.out.println();
+                System.out.println("That ticket has already been purchased!");
             } else {
                 validInput = true;
                 bookSeat(row, seat);
